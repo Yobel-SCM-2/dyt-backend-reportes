@@ -1,0 +1,15 @@
+package com.pdf_reports.utils.constants.messages;
+
+public enum ErrorMessage {
+    CARGO_DOES_NOT_EXIST("Carga no existe para el CD y fecha ingresados"),
+    NO_CARGOS_FOUND("No existen cargas para el CD y fecha ingresados");
+    private final String description;
+
+    ErrorMessage(String description) {
+        this.description = description;
+    }
+
+    public String value() {
+        return this.description;
+    }
+}
