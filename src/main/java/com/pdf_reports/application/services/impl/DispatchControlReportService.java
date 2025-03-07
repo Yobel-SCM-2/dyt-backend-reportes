@@ -30,9 +30,9 @@ public class DispatchControlReportService implements IDispatchControlReportServi
 
     @Override
     public byte[] generateDispatchControlReport(ReportRequest request) {
-        try(InputStream reportStream = getResource("/reports/dispatchOrderControl.jasper");
-            InputStream banner = getResource("/reports/yobelbanner.png")) {
-
+        try {
+            InputStream reportStream = getResource("/reports/dispatchOrderControl.jasper");
+            InputStream banner = getResource("/reports/yobelbanner.png");
             JasperReport detailReport = (JasperReport) JRLoader.loadObject(getResource("/reports/test.jasper"));
             Map<String, Object> params = new HashMap<>();
             params.put("banner", banner);
