@@ -42,6 +42,7 @@ public class DispatchControlReportService implements IDispatchControlReportServi
             InputStream banner = getResource("/reports/yobelbanner.png");
             JasperReport detailReport = (JasperReport) JRLoader.loadObject(getResource("/reports/test.jasper"));
             Map<String, Object> params = new HashMap<>();
+            params.put("time", request.time());
             params.put("banner", banner);
             params.put("details", detailReport);
             params.put("cd", request.cd());
