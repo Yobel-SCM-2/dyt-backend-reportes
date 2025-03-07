@@ -10,12 +10,12 @@ import com.pdf_reports.utils.constants.messages.ErrorMessage;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -38,10 +38,9 @@ public class DispatchControlReportService implements IDispatchControlReportServi
         Connection cn = null;
         try {
             cn = dataSource.getConnection();
-            InputStream reportStream = new ByteArrayInputStream(getResourceAsByteArray("/reports/dispatchOrderControl.jasper"));
-            InputStream banner = new ByteArrayInputStream(getResourceAsByteArray("/reports/yobelbanner.png"));
-            InputStream detailReport = new ByteArrayInputStream(getResourceAsByteArray("/reports/test.jasper"));
-
+            InputStream reportStream = getResource("/reports/dispatchOrderControl.jasper");
+            InputStream banner = getResource("/reports/yobelbanner.png");
+            JasperReport detailReport = (JasperReport) JRLoader.loadObject(getResource("/reports/test.jasper"));
             Map<String, Object> params = new HashMap<>();
             params.put("banner", banner);
             params.put("details", detailReport);
@@ -68,16 +67,6 @@ public class DispatchControlReportService implements IDispatchControlReportServi
 
     private InputStream getResource(String path) {
         return this.getClass().getResourceAsStream(path);
-    }
-
-    private byte[] getResourceAsByteArray(String path) throws IOException {
-        try (InputStream is = getResource(path)) {
-            if (is == null) {
-                throw new IOException("Archivo no encontrado: " + path);
-            }
-
-            return is.readAllBytes();
-        }
     }
 
     @Override
