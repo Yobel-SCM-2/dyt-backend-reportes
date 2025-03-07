@@ -10,8 +10,6 @@ import com.pdf_reports.utils.constants.messages.ErrorMessage;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -30,13 +28,13 @@ public class DispatchControlReportService implements IDispatchControlReportServi
 
     @Override
     public byte[] generateDispatchControlReport(ReportRequest request) {
-        try(InputStream reportStream = getResource("/reports/dispatchOrderControl.jasper");
-            InputStream banner = getResource("/reports/yobelbanner.png")) {
-
-            JasperReport detailReport = (JasperReport) JRLoader.loadObject(getResource("/reports/test.jasper"));
+        try {
+            InputStream reportStream = getResource("/reports/dispatchOrderControl.jasper");
+            InputStream banner = getResource("/reports/yobelbanner.png");
+            InputStream detailSubReport = getResource("/reports/test.jasper");
             Map<String, Object> params = new HashMap<>();
             params.put("banner", banner);
-            params.put("details", detailReport);
+            params.put("details", detailSubReport);
             params.put("cd", request.cd());
             params.put("cargoNumber", request.cargoNumber());
             params.put("dispatchDate", request.dispatchDate());
