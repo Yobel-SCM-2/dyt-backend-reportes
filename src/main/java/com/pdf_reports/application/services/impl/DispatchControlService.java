@@ -1,7 +1,7 @@
 package com.pdf_reports.application.services.impl;
 
-import com.pdf_reports.application.services.IDispatchControlReportService;
-import com.pdf_reports.domain.models.dto.request.ReportRequest;
+import com.pdf_reports.application.services.IDispatchControlService;
+import com.pdf_reports.domain.models.dto.request.DispatchControlRequest;
 import com.pdf_reports.domain.repositories.IDispatchControlRepository;
 import com.pdf_reports.utils.constants.values.DefaultValue;
 import com.pdf_reports.utils.exceptions.CargoDoesNotExistException;
@@ -18,29 +18,26 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class DispatchControlReportService implements IDispatchControlReportService {
-    private static final Logger logger = LoggerFactory.getLogger(DispatchControlReportService.class);
+public class DispatchControlService implements IDispatchControlService {
+    private static final Logger logger = LoggerFactory.getLogger(DispatchControlService.class);
     private final IDispatchControlRepository repository;
     private final DataSource dataSource;
 
-    public DispatchControlReportService(IDispatchControlRepository repository, DataSource dataSource) {
+    public DispatchControlService(IDispatchControlRepository repository, DataSource dataSource) {
         this.repository = repository;
         this.dataSource = dataSource;
     }
 
     @Override
-    public byte[] generateDispatchControlReport(ReportRequest request) {
-        Connection cn = null;
-        try {
-            cn = dataSource.getConnection();
-            InputStream reportStream = getResource("/reports/dispatchOrderControl.jasper");
+    public byte[] generateDispatchControlReport(DispatchControlRequest request) {
+        try(Connection cn = dataSource.getConnection()) {
+            InputStream reportStream = getResource("/reports/dispatchControl/dispatchControl.jasper");
             InputStream banner = getResource("/reports/yobelbanner.png");
-            JasperReport detailReport = (JasperReport) JRLoader.loadObject(getResource("/reports/test.jasper"));
+            JasperReport detailReport = (JasperReport) JRLoader.loadObject(getResource("/reports/dispatchControl/test.jasper"));
             Map<String, Object> params = new HashMap<>();
             params.put("time", request.time());
             params.put("banner", banner);
@@ -53,16 +50,6 @@ public class DispatchControlReportService implements IDispatchControlReportServi
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            if(cn != null) {
-                try {
-                    cn.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                    logger.error(e.getMessage());
-                    logger.error(e.getLocalizedMessage());
-                }
-            }
         }
     }
 

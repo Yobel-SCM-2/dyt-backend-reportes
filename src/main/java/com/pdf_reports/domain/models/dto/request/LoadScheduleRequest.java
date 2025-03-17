@@ -1,8 +1,8 @@
 package com.pdf_reports.domain.models.dto.request;
 
-public record ReportRequest(
+public record LoadScheduleRequest(
         String cd,
         String dispatchDate,
-        int cargoNumber,
+        String status,
         String time
 ) {}
