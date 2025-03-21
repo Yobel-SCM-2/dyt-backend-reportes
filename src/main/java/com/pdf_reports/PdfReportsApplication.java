@@ -9,5 +9,4 @@ public class PdfReportsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PdfReportsApplication.class, args);
 	}
-
 }
