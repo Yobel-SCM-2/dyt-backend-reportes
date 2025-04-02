@@ -44,7 +44,8 @@ public class RouteControlService implements IRouteControlService {
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }    }
+        }
+    }
 
     @Override
     public void ensureAnyCargoExists(String cd, String dispatchDate, int cargoNumber) {
