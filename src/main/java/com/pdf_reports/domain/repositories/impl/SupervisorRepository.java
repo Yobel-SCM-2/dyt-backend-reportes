@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -26,7 +25,7 @@ public class SupervisorRepository implements ISupervisorRepository {
                 .withProcedureName("CARGAS_SUPERVISOR_VALIDACION")
                 .declareParameters(
                         new SqlParameter("p_account", Types.VARCHAR),
-                        new SqlParameter("p_process_date", Types.TIMESTAMP),
+                        new SqlParameter("p_process_date", Types.DATE),
                         new SqlParameter("p_batch", Types.VARCHAR),
                         new SqlOutParameter("p_result", Types.INTEGER)
                 );
