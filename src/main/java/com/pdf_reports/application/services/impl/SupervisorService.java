@@ -14,6 +14,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.apache.commons.collections4.queue.PredicatedQueue;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -71,14 +72,16 @@ public class SupervisorService implements ISupervisorService {
         params.put("banner", banner);
         params.put("time", time);
         params.put("account", parameters.account());
+        params.put("accountDesc", parameters.accountDesc());
         params.put("batch", batch);
-        params.put("date", date);
+        params.put("processDate", date);
         params.put("cd", header.cd());
         params.put("campaign", header.campaign());
         params.put("dispatchDate", header.dispatchDate());
         params.put("origin", parameters.cdDesc());
         params.put("detail", details);
         params.put("normalOrders", summary.normalOrders());
+        params.put("cdDesc", parameters.cdDesc());
         return params;
     }
 }
