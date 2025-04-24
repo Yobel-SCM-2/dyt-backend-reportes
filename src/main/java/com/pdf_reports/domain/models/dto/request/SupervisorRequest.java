@@ -6,5 +6,6 @@ public record SupervisorRequest(
         String account,
         OffsetDateTime processDate,
         int processBatch,
-        String timeZone
+        String timeZone,
+        String time
 ) {}
